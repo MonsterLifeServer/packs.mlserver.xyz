@@ -77,8 +77,10 @@ header("Access-Control-Allow-Origin: *");
                             $assets = (array) $json->assets;
 
                             $temp3 = '';
+                            $temp5 = '';
 
                             foreach ($assets as $item) {
+                                $temp4 = '';
                                 $name = $item->name; /* Filename */
                                 $name = explode('.zip', $name)[0]; /* delete .zip */
                                 $updated_at = $item->updated_at; /* file updated at time */
@@ -104,16 +106,27 @@ header("Access-Control-Allow-Origin: *");
                                 else if ($pass_years < 1) $updated_at = $pass_dates . "日前";
                                 else $updated_at = $pass_years . "年前";
                                 
-                                $temp3 .= "<div class='PackCard'>";
-                                $temp3 .= "<div class='PackCard_img'><img src='https://raw.githubusercontent.com/MonsterLifeServer/resoucepacks/master/".$name."/pack.png'></img></div>";
-                                $temp3 .= "<div class='PackCard_content'><b>".$name."</b><br />";
-                                $temp3 .= "<div class='content'>".$description."</div>";
-                                $temp3 .= "<div class='updated'>".$updated_at."</div></div>";
-                                $temp3 .= "<div class='PackCard_url'>".$sh_url."</div>";
-                                $temp3 .= "<a href='".$download_url."'></a>";
-                                $temp3 .= "</div>";
+                                $temp4 .= "<div class='PackCard'>";
+                                $temp4 .= "<div class='PackCard_img'><img src='https://raw.githubusercontent.com/MonsterLifeServer/resoucepacks/master/".$name."/pack.png'></img></div>";
+                                $temp4 .= "<div class='PackCard_content'><b>".$name."</b><br />";
+                                $temp4 .= "<div class='content'>".$description."</div>";
+                                $temp4 .= "<div class='updated'>".$updated_at."</div></div>";
+                                $temp4 .= "<div class='PackCard_url'>".$sh_url."</div>";
+                                $temp4 .= "<a href='".$download_url."'></a>";
+                                $temp4 .= "</div>";
+
+                                if (isset($_GET["id"])) {
+                                    if ($name == $_GET["id"]) {
+                                        $temp5 .= $temp4;
+                                    }
+                                }
+                                $temp3 .= $temp4;
                             }
-                            echo $temp3;
+                            if (strlen($temp5) > 0) {
+                                echo $temp5;
+                            } else {
+                                echo $temp3;
+                            }
                         ?>
 
                     </div>
