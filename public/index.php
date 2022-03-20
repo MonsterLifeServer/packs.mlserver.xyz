@@ -1,10 +1,13 @@
 <?php
 
-$config = include($_SERVER["DOCUMENT_ROOT"] . '/assets/config.php');
-
-$TITLE = "リソースパックページ";
-$URL = 'https://packs.mlserver.xyz/';
-$DESCRIPTION = "リソースパックページ";
+$path = "../../www.mlserver.xyz/assets/";
+if (strpos($_SERVER["HTTP_HOST"], "localhost:8090") !== false) {
+    $path = "../../../main/public/assets/";
+}
+include($path . 'function.php');
+$func = new HomePageFunction($path . 'config.php', 'リソースパックページ');
+$func->setPageUrl('https://packs.mlserver.xyz/');
+$func->setDescription('リソースパックページ');
 
 /// Access-Control-Allow-Originエラーを回避する
 header("Access-Control-Allow-Origin: *");
@@ -13,11 +16,7 @@ header("Access-Control-Allow-Origin: *");
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="ja">
 	<head>
-        <?php echo $html["common_head"]; ?>
-		<title><?php echo $TITLE; ?></title>
-		<meta property="og:url" content="<?php echo $URL; ?>/" />
-		<meta property="og:title" content="<?php echo $TITLE; ?> | MonsterLifeServer" />
-		<meta property="og:description" content="<?php echo $DESCRIPTION; ?>" />
+        <?php $func->printMetaData(); ?>
         <link rel="stylesheet" href="./css/style.min.css">
     </head>
     <body>
@@ -40,7 +39,7 @@ header("Access-Control-Allow-Origin: *");
                                 <li itemprop="itemListElement" itemscope
                                     itemtype="https://schema.org/ListItem">
                                     <a itemprop="item" href="https://packs.mlserver.xyz/">
-                                        <span itemprop="name"><?php echo $TITLE; ?></span>
+                                        <span itemprop="name"><?php echo $func->getTitle(); ?></span>
                                     </a>
                                     <meta itemprop="position" content="2" />
                                 </li>
@@ -136,5 +135,5 @@ header("Access-Control-Allow-Origin: *");
         </div>
         <?php include( $_SERVER["DOCUMENT_ROOT"] . "/assets/include/footer.php"); ?>
     </body>
-    <?php echo $html["common_foot"]; ?>
+    <?php $func->printFootScript(); ?>
 </html>
