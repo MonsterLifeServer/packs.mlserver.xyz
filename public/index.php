@@ -1,13 +1,17 @@
 <?php
 
 $path = "../../www.mlserver.xyz/assets/";
-if (strpos($_SERVER["HTTP_HOST"], "localhost:8090") !== false) {
-    $path = "../../../main/public/assets/";
+if (strpos($_SERVER["HTTP_HOST"], "localhost") !== false) {
+    $path = "../../../public/assets/";
 }
 include($path . 'function.php');
 $func = new HomePageFunction($path . 'config.php', 'リソースパックページ');
 $func->setPageUrl('https://packs.mlserver.xyz/');
 $func->setDescription('リソースパックページ');
+
+include($func->getDiscordLibPath());
+$disLib = new DiscordLib($func->getPageUrl(), $func->getDiscordOAuth2_ID(), $func->getDiscordOAuth2_Secret());
+$disLib->initDiscordOAuth();
 
 /// Access-Control-Allow-Originエラーを回避する
 header("Access-Control-Allow-Origin: *");
